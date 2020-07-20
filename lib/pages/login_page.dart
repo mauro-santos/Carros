@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   final _tLogin = TextEditingController(/*text: "mauro"*/);
   final _tSenha = TextEditingController(/*text: "123"*/);
+
+  final _focusSenha = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +40,9 @@ class LoginPage extends StatelessWidget {
               "Digite o login",
               controller: _tLogin,
               validator: _validateLogin,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              focusNodeNext: _focusSenha,
             ),
             SizedBox(
               height: 10,
@@ -38,6 +53,8 @@ class LoginPage extends StatelessWidget {
               password: true,
               controller: _tSenha,
               validator: _validateSenha,
+              keyboardType: TextInputType.number,
+              focusNodeActual: _focusSenha,
             ),
             SizedBox(
               height: 20,
@@ -55,14 +72,25 @@ class LoginPage extends StatelessWidget {
     bool password = false,
     TextEditingController controller,
     FormFieldValidator<String> validator,
+    TextInputType keyboardType,
+    TextInputAction textInputAction,
+    FocusNode focusNodeActual,
+    FocusNode focusNodeNext,
   }) {
     return TextFormField(
       controller: controller,
       validator: validator,
       obscureText: password,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      focusNode: focusNodeActual,
+      onFieldSubmitted: (String text) {
+        if (focusNodeNext != null)
+          FocusScope.of(context).requestFocus(focusNodeNext);
+      },
       style: TextStyle(
-        fontSize: 25,
-        color: Colors.blue,
+        fontSize: 25, // Tamanho do texto digitado
+        color: Colors.blue, // Cor do texto digitado
       ),
       decoration: InputDecoration(
         labelText: label,
@@ -123,5 +151,10 @@ class LoginPage extends StatelessWidget {
     }
 
     return null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
