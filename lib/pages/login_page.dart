@@ -1,3 +1,5 @@
+import 'package:carros/widgets/app_button.dart';
+import 'package:carros/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -35,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(16),
         child: ListView(
           children: <Widget>[
-            _text(
+            AppText(
               "Login",
               "Digite o login",
               controller: _tLogin,
@@ -47,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 10,
             ),
-            _text(
+            AppText(
               "Senha",
               "Digite a senha",
               password: true,
@@ -59,66 +61,9 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            _button("ENTRAR", _onClickLogin)
+            AppButton("ENTRAR", onPressed: _onClickLogin)
           ],
         ),
-      ),
-    );
-  }
-
-  _text(
-    String label,
-    String hint, {
-    bool password = false,
-    TextEditingController controller,
-    FormFieldValidator<String> validator,
-    TextInputType keyboardType,
-    TextInputAction textInputAction,
-    FocusNode focusNodeActual,
-    FocusNode focusNodeNext,
-  }) {
-    return TextFormField(
-      controller: controller,
-      validator: validator,
-      obscureText: password,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      focusNode: focusNodeActual,
-      onFieldSubmitted: (String text) {
-        if (focusNodeNext != null)
-          FocusScope.of(context).requestFocus(focusNodeNext);
-      },
-      style: TextStyle(
-        fontSize: 25, // Tamanho do texto digitado
-        color: Colors.blue, // Cor do texto digitado
-      ),
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(
-          fontSize: 25,
-          color: Colors.grey,
-        ),
-        hintText: hint,
-        hintStyle: TextStyle(
-          fontSize: 16,
-        ),
-      ),
-    );
-  }
-
-  _button(String text, Function onPressed) {
-    return Container(
-      height: 46,
-      child: RaisedButton(
-        color: Colors.blue,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 22,
-          ),
-        ),
-        onPressed: onPressed,
       ),
     );
   }
