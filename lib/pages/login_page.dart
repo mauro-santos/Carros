@@ -83,10 +83,11 @@ class _LoginPageState extends State<LoginPage> {
 
     bool ok = await LoginApi.login(login, senha);
 
-    if (ok)
+    if (ok) {
       push(context, HomePage());
-    else
+    } else {
       print("Login incorreto");
+    }
   }
 
   String _validateLogin(String text) {
@@ -101,8 +102,10 @@ class _LoginPageState extends State<LoginPage> {
       return "Digite a senha";
     }
 
-    if (text.length < 6) {
-      return "A senha precisa ter pelo menos 6 dígitos";
+    final int maxDigits = 3;
+
+    if (text.length < maxDigits) {
+      return "A senha precisa ter pelo menos $maxDigits dígitos";
     }
 
     return null;
