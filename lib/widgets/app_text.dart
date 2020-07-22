@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AppText extends StatelessWidget {
-  String label;
-  String hint;
-  bool password;
-  TextEditingController controller;
-  FormFieldValidator<String> validator;
-  TextInputType keyboardType;
-  TextInputAction textInputAction;
-  FocusNode focusNodeActual;
-  FocusNode focusNodeNext;
+  final String label;
+  final String hint;
+  final bool password;
+  final TextEditingController controller;
+  final FormFieldValidator<String> validator;
+  final TextInputType keyboardType;
+  final TextInputAction textInputAction;
+  final FocusNode focusNodeActual;
+  final FocusNode focusNodeNext;
 
   AppText(
     this.label,
@@ -41,6 +41,9 @@ class AppText extends StatelessWidget {
         color: Colors.blue, // Cor do texto digitado
       ),
       decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+        ) /*UnderlineInputBorder()*/,
         labelText: label,
         labelStyle: TextStyle(
           fontSize: 25,
