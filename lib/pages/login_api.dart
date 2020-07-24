@@ -14,6 +14,7 @@ class LoginApi {
       "password": senha,
     };
 
+    // Converter para string para utlizar o header como application/json
     String s = json.encode(params);
     print("> $s");
 
@@ -21,6 +22,15 @@ class LoginApi {
 
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
+
+    Map mapResponse = json.decode(response.body);
+    String nome = mapResponse["nome"];
+    String email = mapResponse["email"];
+    String error = mapResponse["error"];
+
+    print("Nome: $nome");
+    print("Email: $email");
+    print("Error: $error");
 
     return true;
   }
