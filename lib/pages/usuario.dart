@@ -10,10 +10,20 @@ class Usuario {
       : this.login = map["login"],
         this.nome = map["nome"],
         this.email = map["email"],
-        this.token = map["token"];
+        this.token = map["token"],
+        this.roles = getRoles(map);
 
   @override
   String toString() {
     return 'Usuario{login: $login, nome: $nome, email: $email, token: $token, roles: $roles}';
+  }
+
+  static List<String> getRoles(Map<String, dynamic> map) {
+    List list = map["roles"];
+    List<String> roles = [];
+    for (String role in list) {
+      roles.add(role);
+    }
+    return roles;
   }
 }
