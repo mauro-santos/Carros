@@ -6,10 +6,14 @@ class Usuario {
 
   List<String> roles;
 
-  Usuario(this.nome, this.email);
+  Usuario.fromJson(Map<String, dynamic> map)
+      : this.login = map["login"],
+        this.nome = map["nome"],
+        this.email = map["email"],
+        this.token = map["token"];
 
   @override
   String toString() {
-    return 'Usuario{login: $login, nome: $nome, email: $email, token: $token}';
+    return 'Usuario{login: $login, nome: $nome, email: $email, token: $token, roles: $roles}';
   }
 }
