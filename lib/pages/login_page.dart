@@ -38,8 +38,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _body() {
-    _showProgress = false;
-
     return Form(
       key: _formKey,
       child: Container(
@@ -82,16 +80,22 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _onClickLogin() async {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
+    if (!_formKey.currentState.validate()) return;
 
     String login = _tLogin.text;
     String senha = _tSenha.text;
 
     print("${this.toStringShort()} > Login: $login, Senha: $senha");
 
+    setState(() {
+      _showProgress = true;
+    });
+
     ApiResponse response = await LoginApi.login(login, senha);
+
+    setState(() {
+      _showProgress = false;
+    });
 
     if (response.ok) {
       Usuario user = response.result;

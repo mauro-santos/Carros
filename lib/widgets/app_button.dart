@@ -14,9 +14,23 @@ class AppButton extends StatelessWidget {
       child: RaisedButton(
         color: Colors.blue,
         child: showProgress
-            ? Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ? Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Aguarde",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               )
             : Text(
@@ -26,7 +40,7 @@ class AppButton extends StatelessWidget {
                   fontSize: 22,
                 ),
               ),
-        onPressed: onPressed,
+        onPressed: showProgress ? () => {} : onPressed,
       ),
     );
   }
