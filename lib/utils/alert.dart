@@ -7,6 +7,7 @@ alert(BuildContext context, String msg) {
       barrierDismissible: false,
       builder: (context) {
         return WillPopScope(
+          // Não permitir retornar com a seta do Menu Button no Android
           onWillPop: () async => false,
           child: AlertDialog(
             title: Text("Carros"),

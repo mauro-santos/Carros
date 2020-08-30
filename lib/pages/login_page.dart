@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final _tSenha = TextEditingController(/*text: "123"*/);
 
   final _focusSenha = FocusNode();
+  bool _showProgress = false;
 
   @override
   void initState() {
@@ -37,6 +38,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _body() {
+    _showProgress = false;
+
     return Form(
       key: _formKey,
       child: Container(
@@ -67,7 +70,11 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            AppButton("ENTRAR", onPressed: _onClickLogin)
+            AppButton(
+              "ENTRAR",
+              onPressed: _onClickLogin,
+              showProgress: _showProgress,
+            )
           ],
         ),
       ),
