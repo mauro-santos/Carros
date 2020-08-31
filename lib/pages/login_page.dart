@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
 
       print("${this.toStringShort()} >>> $user");
 
-      push(context, HomePage());
+      push(context, HomePage(), replacement: true);
     } else {
       alert(context, response.msg);
     }
