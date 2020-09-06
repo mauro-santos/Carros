@@ -16,12 +16,28 @@ class HomePage extends StatelessWidget {
   }
 
   _body() {
-    List<Carro> carros = CarrosApi.getCarros();
+    Future<List<Carro>> future = CarrosApi.getCarros();
 
+    return FutureBuilder(
+      future: future,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        List<Carro> carros = snapshot.data;
+        return _listView(carros);
+      },
+    );
+  }
+
+  _listView(List<Carro> carros) {
     return Container(
       padding: EdgeInsets.all(10),
       child: ListView.builder(
-        itemCount: carros.length,
+        itemCount: carros != null ? carros.length : 0,
         itemBuilder: (context, index) {
           Carro c = carros[index];
 
@@ -46,12 +62,12 @@ class HomePage extends StatelessWidget {
                     style: TextStyle(fontSize: 25),
                   ),
                   Text(
-                    "descrição...",
+                    "Descrição...",
                     style: TextStyle(fontSize: 16),
                   ),
                   /*ButtonBarTheme(
-                    data: ButtonBarTheme.of(context),
-                    child:*/
+                  data: ButtonBarTheme.of(context),
+                  child:*/
                   ButtonBar(
                     children: <Widget>[
                       FlatButton(
