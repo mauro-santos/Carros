@@ -21,6 +21,20 @@ class HomePage extends StatelessWidget {
     return FutureBuilder(
       future: future,
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print(snapshot.error);
+
+          return Center(
+            child: Text(
+              "Não foi possível carregar os dados de carros",
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 16,
+              ),
+            ),
+          );
+        }
+
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
@@ -51,12 +65,13 @@ class HomePage extends StatelessWidget {
                 children: <Widget>[
                   Center(
                     child: Image.network(
-                      c.urlFoto,
+                      c.urlFoto ??
+                          "https://s3-sa-east-1.amazonaws.com/videos.livetouchdev.com.br/esportivos/Porsche_Panamera.png",
                       width: 250,
                     ),
                   ),
                   Text(
-                    c.nome,
+                    c.nome ?? "Nenhum",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 25),
