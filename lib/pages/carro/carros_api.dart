@@ -2,13 +2,26 @@ import 'package:carros/pages/carro/carro.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+class TipoCarro {
+  static final String classicos = "classicos";
+  static final String esportivos = "esportivos";
+  static final String luxo = "luxo";
+}
+
 class CarrosApi {
-  static Future<List<Carro>> getCarros() async {
+  static Future<List<Carro>> getCarros(String tipo) async {
     /*
     // A outra maneira de fazer tratamento do erro é no snapshot do FutureBuilder, ao invés de usar o try..catch aqui no método API.
     try {
     */
-    var url = 'https://carros-springboot.herokuapp.com/api/v1/carros';
+
+    /*
+    String s = tipo.toString().replaceAll("TipoCarro.", "");
+    var url = 'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$s';
+    */
+
+    var url =
+        'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$tipo';
 
     print("GET > $url");
 
