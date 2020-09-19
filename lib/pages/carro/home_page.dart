@@ -17,14 +17,24 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
 
+    _initTabs();
+  }
+
+  _initTabs() async {
+    // Primeiro busca o índice nas prefs
+    int tabIndex = await Prefs.getInt("tabIndex");
+
+    // Depois cria o TabController
+    // No método build na primeira vez ele poderá estar nulo
     _tabController = TabController(length: 3, vsync: this);
 
-    Prefs.getInt("tabIndex").then((int tabIndex) {
+    // Agora que temos o TabController e o índice da tab,
+    // chama o setState para redesenhar a tela
+    setState(() {
       _tabController.index = tabIndex;
     });
 
     _tabController.addListener(() {
-      print(_tabController.index);
       Prefs.setInt("tabIndex", _tabController.index);
     });
   }
@@ -34,29 +44,35 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: AppBar(
         title: Text("Carros"),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(
-              text: "Clássicos",
-            ),
-            Tab(
-              text: "Esportivos",
-            ),
-            Tab(
-              text: "Luxo",
-            ),
-          ],
-        ),
+        bottom: _tabController == null
+            ? null
+            : TabBar(
+                controller: _tabController,
+                tabs: [
+                  Tab(
+                    text: "Clássicos",
+                  ),
+                  Tab(
+                    text: "Esportivos",
+                  ),
+                  Tab(
+                    text: "Luxo",
+                  ),
+                ],
+              ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          CarrosListView(TipoCarro.classicos),
-          CarrosListView(TipoCarro.esportivos),
-          CarrosListView(TipoCarro.luxo),
-        ],
-      ),
+      body: _tabController == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : TabBarView(
+              controller: _tabController,
+              children: [
+                CarrosListView(TipoCarro.classicos),
+                CarrosListView(TipoCarro.esportivos),
+                CarrosListView(TipoCarro.luxo),
+              ],
+            ),
       drawer: DrawerList(),
     );
   }
