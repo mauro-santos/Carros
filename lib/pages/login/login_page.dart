@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
     String login = _tLogin.text;
     String senha = _tSenha.text;
 
-    print("${this.toStringShort()} > Login: $login, Senha: $senha");
+    print("LoginPage > Login: $login, Senha: $senha");
 
     setState(() {
       _showProgress = true;
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
     if (response.ok) {
       Usuario user = response.result;
 
-      print("${this.toStringShort()} >>> $user");
+      print("LoginPage > Usuario: $user");
 
       push(context, HomePage(), replacement: true);
     } else {
