@@ -46,6 +46,10 @@ class Usuario {
     return 'Usuario{login: $login, nome: $nome, email: $email, token: $token, roles: $roles}';
   }
 
+  static void clear() {
+    Prefs.setString("user.prefs", "");
+  }
+
   void save() {
     Map map = toJson();
 
@@ -56,6 +60,8 @@ class Usuario {
 
   static Future<Usuario> get() async {
     String json = await Prefs.getString("user.prefs");
+
+    if (json.isEmpty) return null;
 
     Map map = convert.json.decode(json);
 
