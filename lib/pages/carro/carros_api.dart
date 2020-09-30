@@ -1,4 +1,5 @@
 import 'package:carros/pages/carro/carro.dart';
+import 'package:carros/pages/login/usuario.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -10,50 +11,36 @@ class TipoCarro {
 
 class CarrosApi {
   static Future<List<Carro>> getCarros(String tipo) async {
-    /*
-    // A outra maneira de fazer tratamento do erro é no snapshot do FutureBuilder, ao invés de usar o try..catch aqui no método API.
-    try {
-    */
+    Usuario user = await Usuario.get();
 
-    /*
-    String s = tipo.toString().replaceAll("TipoCarro.", "");
-    var url = 'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$s';
-    */
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer ${user.token}"
+    };
+
+    //print(headers);
 
     var url =
-        'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$tipo';
+        'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/$tipo';
 
     print("GET > $url");
 
-    var response = await http.get(url);
+    var response = await http.get(url, headers: headers);
 
     String json = response.body;
+    //print("Status code: ${response.statusCode}");
     //print(json);
 
+    //try {
     List list = convert.json.decode(json);
-
-    /*
-    // Map manual com for().
-    final carros = List<Carro>();
-
-    for (Map map in list) {
-      Carro c = Carro.fromJson(map);
-      carros.add(c);
-    }
-    */
-
-    /*
-    final carros = list.map<Carro>((map) {
-      return Carro.fromJson(map);
-    }).toList();
-    */
 
     final carros = list.map<Carro>((map) => Carro.fromJson(map)).toList();
 
     return carros;
     /*
-    } catch (error) {
-      print(error);
+    } catch (error, exception) {
+      print("$error > $exception");
+      throw error; // Lançar exception para reconhecer error
     }
     */
   }
