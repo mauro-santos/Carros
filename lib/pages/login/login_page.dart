@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/home_page.dart';
 import 'package:carros/pages/login/login_api.dart';
@@ -16,11 +18,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
+  final _streamController = StreamController<bool>();
+
   final _tLogin = TextEditingController();
   final _tSenha = TextEditingController();
 
   final _focusSenha = FocusNode();
-  bool _showProgress = false;
 
   @override
   void initState() {
@@ -80,11 +83,18 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            AppButton(
-              "ENTRAR",
-              onPressed: _onClickLogin,
-              showProgress: _showProgress,
-            )
+            StreamBuilder<bool>(
+                stream: _streamController.stream,
+                initialData: false,
+                builder: (context, snapshot) {
+                  return AppButton(
+                    "ENTRAR",
+                    onPressed: _onClickLogin,
+                    showProgress: snapshot.data,
+                    //!snapshot.hasData || snapshot.hasError ? false : snapshot.data,
+                    //snapshot.data ?? false,
+                  );
+                })
           ],
         ),
       ),
@@ -99,15 +109,11 @@ class _LoginPageState extends State<LoginPage> {
 
     print("LoginPage > Login: $login, Senha: $senha");
 
-    setState(() {
-      _showProgress = true;
-    });
+    _streamController.add(true);
 
     ApiResponse response = await LoginApi.login(login, senha);
 
-    setState(() {
-      _showProgress = false;
-    });
+    _streamController.add(false);
 
     if (response.ok) {
       Usuario user = response.result;
@@ -144,5 +150,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
+
+    _streamController.close();
   }
 }

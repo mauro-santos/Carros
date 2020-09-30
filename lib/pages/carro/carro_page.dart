@@ -7,8 +7,6 @@ class CarroPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("CarroPage build");
-
     return Scaffold(
       appBar: AppBar(
         title: Text(carro.nome),

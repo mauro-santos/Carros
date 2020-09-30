@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_page.dart';
 import 'package:carros/pages/carro/carros_api.dart';
@@ -16,6 +18,8 @@ class _CarrosListViewState extends State<CarrosListView>
     with AutomaticKeepAliveClientMixin<CarrosListView> {
   List<Carro> carros;
 
+  final _streamController = StreamController<List<Carro>>();
+
   @override
   bool get wantKeepAlive => true;
 
@@ -23,40 +27,44 @@ class _CarrosListViewState extends State<CarrosListView>
   void initState() {
     super.initState();
 
-    /*
-    Future<List<Carro>> future = CarrosApi.getCarros(widget.tipo);
-
-    future.then((List<Carro> carros) {
-      setState(() {
-        this.carros = carros;
-      });
-    });
-    */
-
-    _loadData();
+    _loadCarros();
   }
 
-  _loadData() async {
+  _loadCarros() async {
     List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
 
-    setState(() {
-      this.carros = carros;
-    });
+    _streamController.add(carros);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    print("CarrosListView build ${widget.tipo}");
+    return StreamBuilder(
+      stream: _streamController.stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              "Não foi possível carregar os dados de carros",
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 16,
+              ),
+            ),
+          );
+        }
 
-    if (carros == null) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
 
-    return _listView(carros);
+        List<Carro> carros = snapshot.data;
+        return _listView(carros);
+      },
+    );
   }
 
   _listView(List<Carro> carros) {
@@ -119,5 +127,12 @@ class _CarrosListViewState extends State<CarrosListView>
 
   _onClickCarro(Carro c) {
     push(context, CarroPage(c));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _streamController.close();
   }
 }
