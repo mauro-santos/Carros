@@ -18,8 +18,6 @@ class CarrosApi {
       "Authorization": "Bearer ${user.token}"
     };
 
-    //print(headers);
-
     var url =
         'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/$tipo';
 
@@ -28,20 +26,11 @@ class CarrosApi {
     var response = await http.get(url, headers: headers);
 
     String json = response.body;
-    //print("Status code: ${response.statusCode}");
-    //print(json);
 
-    //try {
     List list = convert.json.decode(json);
 
     final carros = list.map<Carro>((map) => Carro.fromJson(map)).toList();
 
     return carros;
-    /*
-    } catch (error, exception) {
-      print("$error > $exception");
-      throw error; // Lançar exception para reconhecer error
-    }
-    */
   }
 }
