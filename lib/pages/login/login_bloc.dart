@@ -3,14 +3,20 @@ import 'package:carros/pages/carro/simple_bloc.dart';
 import 'package:carros/pages/login/login_api.dart';
 import 'package:carros/pages/login/usuario.dart';
 
-class LoginBloc extends SimpleBloc<bool> {
+class LoginBloc {
+  final buttonBloc = BooleanBloc();
+
   Future<ApiResponse<Usuario>> login(String login, String senha) async {
-    add(true);
+    buttonBloc.add(true);
 
     ApiResponse response = await LoginApi.login(login, senha);
 
-    add(false);
+    buttonBloc.add(false);
 
     return response;
+  }
+
+  void dispose() {
+    buttonBloc.dispose();
   }
 }

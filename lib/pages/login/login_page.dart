@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             StreamBuilder<bool>(
-                stream: _bloc.stream,
+                stream: _bloc.buttonBloc.stream,
                 initialData: false,
                 builder: (context, snapshot) {
                   return AppButton(

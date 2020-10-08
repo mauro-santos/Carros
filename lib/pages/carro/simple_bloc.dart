@@ -17,3 +17,5 @@ class SimpleBloc<T> {
     if (!_controller.isClosed) _controller.close();
   }
 }
+
+class BooleanBloc extends SimpleBloc<bool> {}
