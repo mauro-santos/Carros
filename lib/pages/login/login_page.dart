@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/home_page.dart';
-import 'package:carros/pages/login/login_api.dart';
+import 'package:carros/pages/login/login_bloc.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/alert.dart';
 import 'package:carros/utils/nav.dart';
@@ -16,9 +16,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
+  final _bloc = LoginBloc();
 
-  final _streamController = StreamController<bool>();
+  final _formKey = GlobalKey<FormState>();
 
   final _tLogin = TextEditingController();
   final _tSenha = TextEditingController();
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             StreamBuilder<bool>(
-                stream: _streamController.stream,
+                stream: _bloc.stream,
                 initialData: false,
                 builder: (context, snapshot) {
                   return AppButton(
@@ -109,11 +109,7 @@ class _LoginPageState extends State<LoginPage> {
 
     print("LoginPage > Login: $login, Senha: $senha");
 
-    _streamController.add(true);
-
-    ApiResponse response = await LoginApi.login(login, senha);
-
-    _streamController.add(false);
+    ApiResponse response = await _bloc.login(login, senha);
 
     if (response.ok) {
       Usuario user = response.result;
@@ -151,6 +147,6 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     super.dispose();
 
-    _streamController.close();
+    _bloc.dispose();
   }
 }
