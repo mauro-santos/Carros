@@ -2,6 +2,7 @@ import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_page.dart';
 import 'package:carros/pages/carro/carros_bloc.dart';
 import 'package:carros/utils/nav.dart';
+import 'package:carros/widgets/text_error.dart';
 import 'package:flutter/material.dart';
 
 class CarrosListView extends StatefulWidget {
@@ -38,15 +39,7 @@ class _CarrosListViewState extends State<CarrosListView>
       stream: _bloc.stream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              "Não foi possível carregar os dados de carros",
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 16,
-              ),
-            ),
-          );
+          return TextError("Não foi possível carregar os dados de carros");
         }
 
         if (!snapshot.hasData) {
