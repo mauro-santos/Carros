@@ -1,9 +1,10 @@
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_page.dart';
-import 'package:carros/pages/carro/carros_bloc.dart';
+import 'package:carros/pages/carro/carros_model.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/text_error.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class CarrosListView extends StatefulWidget {
   String tipo;
@@ -19,7 +20,7 @@ class _CarrosListViewState extends State<CarrosListView>
 
   String get tipo => widget.tipo;
 
-  final _bloc = CarrosBloc();
+  final _model = CarrosModel();
 
   @override
   bool get wantKeepAlive => true;
@@ -28,27 +29,34 @@ class _CarrosListViewState extends State<CarrosListView>
   void initState() {
     super.initState();
 
-    _bloc.fetch(tipo);
+    _fetch();
+  }
+
+  void _fetch() {
+    _model.fetch(tipo);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    return StreamBuilder(
-      stream: _bloc.stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return TextError("Não foi possível carregar os dados de carros");
+    return Observer(
+      builder: (_) {
+        List<Carro> carros = _model.carros;
+
+        if (_model.error != null) {
+          return TextError(
+            "Não foi possível buscar os carros\n\nClique aqui para tentar novamente.",
+            onPressed: _fetch,
+          );
         }
 
-        if (!snapshot.hasData) {
+        if (carros == null) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        List<Carro> carros = snapshot.data;
         return _listView(carros);
       },
     );
@@ -87,22 +95,21 @@ class _CarrosListViewState extends State<CarrosListView>
                     "Descrição...",
                     style: TextStyle(fontSize: 16),
                   ),
-                  /*ButtonBarTheme(
-                  data: ButtonBarTheme.of(context),
-                  child:*/
-                  ButtonBar(
-                    children: <Widget>[
-                      FlatButton(
-                        child: const Text('DETALHES'),
-                        onPressed: () => _onClickCarro(c),
-                      ),
-                      FlatButton(
-                        child: const Text('SHARE'),
-                        onPressed: () {/* ... */},
-                      ),
-                    ],
+                  ButtonBarTheme(
+                    data: ButtonBarThemeData(),
+                    child: ButtonBar(
+                      children: <Widget>[
+                        FlatButton(
+                          child: const Text('DETALHES'),
+                          onPressed: () => _onClickCarro(c),
+                        ),
+                        FlatButton(
+                          child: const Text('SHARE'),
+                          onPressed: () {/* ... */},
+                        ),
+                      ],
+                    ),
                   ),
-                  //),
                 ],
               ),
             ),
@@ -114,12 +121,5 @@ class _CarrosListViewState extends State<CarrosListView>
 
   _onClickCarro(Carro c) {
     push(context, CarroPage(c));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _bloc.dispose();
   }
 }
