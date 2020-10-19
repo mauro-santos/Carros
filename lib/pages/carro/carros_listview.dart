@@ -1,68 +1,15 @@
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_page.dart';
-import 'package:carros/pages/carro/carros_model.dart';
 import 'package:carros/utils/nav.dart';
-import 'package:carros/widgets/text_error.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
-class CarrosListView extends StatefulWidget {
-  String tipo;
-  CarrosListView(this.tipo);
-
-  @override
-  _CarrosListViewState createState() => _CarrosListViewState();
-}
-
-class _CarrosListViewState extends State<CarrosListView>
-    with AutomaticKeepAliveClientMixin<CarrosListView> {
+class CarrosListView extends StatelessWidget {
   List<Carro> carros;
 
-  String get tipo => widget.tipo;
-
-  final _model = CarrosModel();
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _fetch();
-  }
-
-  void _fetch() {
-    _model.fetch(tipo);
-  }
+  CarrosListView(this.carros);
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
-    return Observer(
-      builder: (_) {
-        List<Carro> carros = _model.carros;
-
-        if (_model.error != null) {
-          return TextError(
-            "Não foi possível buscar os carros\n\nClique aqui para tentar novamente.",
-            onPressed: _fetch,
-          );
-        }
-
-        if (carros == null) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        return _listView(carros);
-      },
-    );
-  }
-
-  _listView(List<Carro> carros) {
     return Container(
       padding: EdgeInsets.all(10),
       child: ListView.builder(
@@ -101,7 +48,7 @@ class _CarrosListViewState extends State<CarrosListView>
                       children: <Widget>[
                         FlatButton(
                           child: const Text('DETALHES'),
-                          onPressed: () => _onClickCarro(c),
+                          onPressed: () => _onClickCarro(context, c),
                         ),
                         FlatButton(
                           child: const Text('SHARE'),
@@ -119,7 +66,7 @@ class _CarrosListViewState extends State<CarrosListView>
     );
   }
 
-  _onClickCarro(Carro c) {
+  _onClickCarro(BuildContext context, Carro c) {
     push(context, CarroPage(c));
   }
 }
