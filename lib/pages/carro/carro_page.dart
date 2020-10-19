@@ -12,13 +12,13 @@ class CarroPage extends StatefulWidget {
 }
 
 class _CarroPageState extends State<CarroPage> {
-  final _loripsumApiBloc = LoripsumBloc();
+  final _loripsumBloc = LoripsumBloc();
 
   @override
   void initState() {
     super.initState();
 
-    _loripsumApiBloc.fetch();
+    _loripsumBloc.fetch();
   }
 
   @override
@@ -112,7 +112,7 @@ class _CarroPageState extends State<CarroPage> {
         text(widget.carro.descricao, fontSize: 16, bold: true),
         SizedBox(height: 20),
         StreamBuilder<String>(
-          stream: _loripsumApiBloc.stream,
+          stream: _loripsumBloc.stream,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -153,6 +153,6 @@ class _CarroPageState extends State<CarroPage> {
   void dispose() {
     super.dispose();
 
-    _loripsumApiBloc.dispose();
+    _loripsumBloc.dispose();
   }
 }
