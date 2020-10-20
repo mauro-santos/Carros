@@ -3,7 +3,6 @@ import 'package:carros/pages/carro/carros_bloc.dart';
 import 'package:carros/pages/carro/carros_listview.dart';
 import 'package:carros/widgets/text_error.dart';
 import 'package:flutter/material.dart';
-import 'package:mobx/mobx.dart';
 
 class CarrosPage extends StatefulWidget {
   String tipo;
@@ -54,9 +53,16 @@ class _CarrosListViewState extends State<CarrosPage>
 
         List<Carro> carros = snapshot.data;
 
-        return CarrosListView(carros);
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: CarrosListView(carros),
+        );
       },
     );
+  }
+
+  Future<void> _onRefresh() {
+    return _bloc.fetch(tipo);
   }
 
   @override
