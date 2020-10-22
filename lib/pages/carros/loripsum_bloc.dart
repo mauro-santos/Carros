@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:carros/pages/carro/loripsum_api.dart';
+import 'package:carros/pages/carros/loripsum_api.dart';
 
 class LoripsumBloc {
   static String s;
