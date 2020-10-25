@@ -1,4 +1,6 @@
 class Carro {
+  static final String tableName = 'carro';
+
   int id;
   String nome;
   String tipo;
