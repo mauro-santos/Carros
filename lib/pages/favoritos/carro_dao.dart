@@ -36,7 +36,7 @@ class CarroDAO {
     final dbClient = await db;
 
     final list = await dbClient.rawQuery(
-      'select * from carro where tipo =? ',
+      'select * from carro where tipo = ?',
       [tipo],
     );
 
