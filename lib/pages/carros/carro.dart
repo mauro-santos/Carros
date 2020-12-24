@@ -33,6 +33,7 @@ class Carro extends Entity {
     longitude = map['longitude'];
   }
 
+  @override
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 

@@ -1,16 +1,15 @@
-// Data Access Object
 import 'package:carros/pages/carros/carro.dart';
+import 'package:carros/pages/favoritos/base_dao.dart';
 
-import 'base_dao.dart';
-
+// Data Access Object
 class CarroDAO extends BaseDAO<Carro> {
+  @override
+  String get tableName => "carro";
+
   @override
   Carro fromMap(Map<String, dynamic> map) {
     return Carro.fromMap(map);
   }
-
-  @override
-  String get tableName => "carro";
 
   Future<List<Carro>> findAllByTipo(String tipo) async {
     final dbClient = await db;
