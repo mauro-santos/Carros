@@ -9,14 +9,19 @@ class CarrosBloc extends SimpleBloc<List<Carro>> {
     List<Carro> carros;
 
     try {
-      bool networkOn = await isNetworkOn();
+      if (!await isNetworkOn()) {
+        print("Busca local...");
 
-      print("NetworkOn? $networkOn");
-
-      if (!networkOn) {
         carros = await CarroDAO().findAllByTipo(tipo);
       } else {
         carros = await CarrosApi.getCarros(tipo);
+
+        if (carros.isNotEmpty) {
+          final dao = CarroDAO();
+
+          // Salvar todos os carros
+          carros.forEach(dao.save);
+        }
       }
 
       add(carros);
