@@ -51,7 +51,10 @@ class DatabaseHelper {
   }
 
   Future<FutureOr<void>> _onUpgrade(
-      Database db, int oldVersion, int newVersion) async {
+    Database db,
+    int oldVersion,
+    int newVersion,
+  ) async {
     print("_onUpgrade: oldVersion: $oldVersion > newVersion: $newVersion");
 
     if (oldVersion == 1 && newVersion == 2) {
