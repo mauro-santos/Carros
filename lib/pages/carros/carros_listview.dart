@@ -5,7 +5,7 @@ import 'package:carros/utils/nav.dart';
 import 'package:flutter/material.dart';
 
 class CarrosListView extends StatelessWidget {
-  List<Carro> carros;
+  final List<Carro> carros;
 
   CarrosListView(this.carros);
 
@@ -47,11 +47,11 @@ class CarrosListView extends StatelessWidget {
                     data: ButtonBarThemeData(),
                     child: ButtonBar(
                       children: <Widget>[
-                        FlatButton(
+                        TextButton(
                           child: const Text('DETALHES'),
                           onPressed: () => _onClickCarro(context, c),
                         ),
-                        FlatButton(
+                        TextButton(
                           child: const Text('SHARE'),
                           onPressed: () {/* ... */},
                         ),

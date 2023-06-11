@@ -6,7 +6,7 @@ import 'package:carros/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class CarroPage extends StatefulWidget {
-  Carro carro;
+  final Carro carro;
   CarroPage(this.carro);
 
   @override

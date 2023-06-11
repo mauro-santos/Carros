@@ -11,8 +11,8 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 46,
-      child: RaisedButton(
-        color: Colors.blue,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
         child: showProgress
             ? Container(
                 child: Row(

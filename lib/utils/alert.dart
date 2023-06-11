@@ -13,7 +13,7 @@ alert(BuildContext context, String msg) {
             title: Text("Carros"),
             content: Text(msg),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text("OK"),
                 onPressed: () {
                   pop(context);
